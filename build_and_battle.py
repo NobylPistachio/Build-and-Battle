@@ -131,6 +131,12 @@ def get_links(soup)->list:
 def create_full_url(url):
     return BASE_URL + url
 
+def scrape_decklist_1(page):
+    pass
+
+def scrape_decklist_2(page):
+    pass
+
 def scrape_assistant(pageType:int):
     match pageType:
         case 1:
@@ -144,7 +150,7 @@ def scrape_assistant(pageType:int):
     
 
 def scrape_decklist(page):
-    print(f"🧩 Scraping: {page[1]}")
+    # print(f"🧩 Scraping: {page[1]}")
     url = page[0]
     # Get the soup
     soup = get_soup(url)
@@ -152,7 +158,7 @@ def scrape_decklist(page):
     sections = soup.find_all("table", class_="multicol")
     # Find how many sections are on page
     # Print number of sections
-    scrape_assistant(len(sections))
+    # scrape_assistant(len(sections))
     # Check for "roundy"
     # Scrape each table with class="roundy"
     # for table in sections:
@@ -160,13 +166,22 @@ def scrape_decklist(page):
 
 # Make tqdm loop over list
 # Scrape each link for decklist
+
     
 def main():
     soup = get_soup(SEARCH_URL)
     links = get_links(soup)
     pages = [(create_full_url(link[0]), link[1]) for link in links]
-    for page in pages:
-        scrape_decklist(page)
+    
+    with tqdm(total=len(pages),desc="Getting Webpages From Bulbapedia") as pbar:
+        for page in pages:
+            tqdm.write(f"Started: {page[1]}")
+            scrape_decklist(page)
+            pbar.update(1)
+
+    # for page in tqdm(range(1, len(pages)+1), desc="Getting Webpages From Bulbapedia"):
+    #     page = pages[page-1]
+    #     scrape_decklist(page)
     print(pages[0])
         
 def test():
