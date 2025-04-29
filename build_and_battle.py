@@ -131,22 +131,37 @@ def get_links(soup)->list:
 def create_full_url(url):
     return BASE_URL + url
 
-def scrape_decklist_1(page):
-    pass
+def get_groups(section):
+    raise NotImplementedError
 
-def scrape_decklist_2(page):
+def scrape_decklist_1(page):
+    raise NotImplementedError
+
+def scrape_decklist_2(sections):
+    if len(sections) != 2:
+        raise Exception("Invalid Number of Sections")
+    
+    print(sections[0])
+    # print(section)
+
+    raise Exception("Testing Stoper")
+
+    for section in sections:
+        
+        get_groups(section)
+
     pass
 
 def scrape_assistant(pageType:int):
     match pageType:
         case 1:
-            print("Found 1 section")
+            return scrape_decklist_1
         case 2:
-            print("Found 2 sections")
+            return scrape_decklist_2
         case 0:
-            print("No Sections Found, please check page")
+            raise Exception("No Sections Found On Page")
         case _:
-            print("Invalid page type")
+            raise Exception("Invalid Page Type")
     
 
 def scrape_decklist(page):
@@ -156,11 +171,16 @@ def scrape_decklist(page):
     soup = get_soup(url)
     # Scrape each table with class="multicol"
     sections = soup.find_all("table", class_="multicol")
+
     # Find how many sections are on page
     # Print number of sections
-    # scrape_assistant(len(sections))
+    section_scraper = scrape_assistant(len(sections))
+
+    section_scraper(sections)
+
     # Check for "roundy"
     # Scrape each table with class="roundy"
+
     # for table in sections:
     pass
 
